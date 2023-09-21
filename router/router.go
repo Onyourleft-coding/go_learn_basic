@@ -42,6 +42,14 @@ func StartRouter() *gin.Engine {
 		r.PUT("/updateArticle", api1.UpdateArticle)
 		r.DELETE("/deleteArticle", api1.DeleteArticle)
 	}
+	//请求头相关
+	{
+		r.GET("/getHeader", api1.GetHeader)
+	}
+	//响应头相关
+	{
+		r.GET("/setHeader", api1.SetHeader)
+	}
 	v1 := router.Group("/v1")
 	{
 		v1.POST("/postForm")
