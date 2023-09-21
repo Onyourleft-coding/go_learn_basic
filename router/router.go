@@ -38,6 +38,9 @@ func StartRouter() *gin.Engine {
 	{
 		r.GET("/getList", api1.GetList)
 		r.GET("/getDetail", api1.GetDetail)
+		r.POST("/createArticle", api1.CreateArticle)
+		r.PUT("/updateArticle", api1.UpdateArticle)
+		r.DELETE("/deleteArticle", api1.DeleteArticle)
 	}
 	v1 := router.Group("/v1")
 	{

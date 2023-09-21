@@ -173,5 +173,42 @@ func GetDetail(c *gin.Context) {
 //编辑文章
 
 func UpdateArticle(c *gin.Context) {
+	fmt.Println(c.Param("id"))
+	//接收前端传来的json数据
+	var article ArticleModel
+	err := BindJson(c, &article)
+	if err != nil {
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, ResponseResult{
+		http.StatusOK,
+		article,
+		"修改成功",
+	})
+}
 
+//新建文章
+
+func CreateArticle(c *gin.Context) {
+	//接收前端传来的json数据
+	var article ArticleModel
+	err := BindJson(c, &article)
+	if err != nil {
+		fmt.Println("err", err)
+		return
+	}
+	c.JSON(http.StatusOK, ResponseResult{
+		http.StatusOK,
+		article,
+		"新增成功",
+	})
+}
+
+//删除文章
+
+func DeleteArticle(c *gin.Context) {
+	fmt.Println("要删除的文章id", c.Param("id"))
+	c.JSON(http.StatusOK, ResponseResult{http.StatusOK,
+		map[string]string{}, "删除成功"})
 }
