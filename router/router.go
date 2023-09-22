@@ -50,6 +50,13 @@ func StartRouter() *gin.Engine {
 	{
 		r.GET("/setHeader", api1.SetHeader)
 	}
+	//Bind
+	{
+		r.POST("/shouldBindJson", api1.ShouldBindJson)
+		r.POST("/shouldBindQuery", api1.ShouldBindQuery)
+		r.POST("/shouldBindUri", api1.ShouldBindUri)
+		r.POST("/shouldBind", api1.ShouldBind)
+	}
 	v1 := router.Group("/v1")
 	{
 		v1.POST("/postForm")
