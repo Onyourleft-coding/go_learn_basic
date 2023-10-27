@@ -65,7 +65,18 @@ func StartRouter() *gin.Engine {
 
 	{
 		v2.GET("/getUserInfo", api2.GetUerInfo)
-		v2.GET("/CreateUser", api2.CreateUser)
+		v2.POST("/CreateUser", api2.CreateUser)
+		v2.POST("/batchInsertUser", api2.BatchInsertUsersWithTable)
+		v2.GET("/takeUserInfo", api2.TakeUserInfo)
+		v2.GET("/takeFirstUserInfo", api2.TakeFirstUserInfo)
+		v2.GET("/takeLastUserInfo", api2.TakeLastUserInfo)
+		v2.GET("/queryUserInfo", api2.QueryUserInfo)
+		v2.GET("/queryUserInfo2", api2.QueryUserInfo2)
+		v2.GET("/QueryTargetTotal", api2.QueryTargetTotal)
+		v2.POST("/QueryUserList", api2.QueryUserList)
+		v2.POST("/QueryUserListByName", api2.QueryUserListByName)
+		v2.POST("/UpdateUserInfo", api2.UpdateUserInfo)
+		v2.POST("/SelectUpdateUserInfo", api2.SelectUpdateUserInfo)
 	}
 
 	return router

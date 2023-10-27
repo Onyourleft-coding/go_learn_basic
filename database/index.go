@@ -36,19 +36,19 @@ func LinkDataBase() {
 // 创建用户表
 
 type User struct {
-	ID         uint //默认使用ID作为主键
-	Name       string
-	Password   string
-	Phone      string
-	Status     int //1 正常 0关闭 -1 假删除
-	CreateTime string
+	ID         uint   `json:"id"` //默认使用ID作为主键
+	Name       string `json:"name" gorm:"size:12"`
+	Password   string `json:"password"`
+	Phone      string `json:"phone"`
+	Status     int    `json:"status"` //1 正常 0关闭 -1 假删除
+	CreateTime string `json:"createTime"`
 }
 
 func CreateTableWithUser() {
 	DB.Debug().AutoMigrate(&User{})
 }
 
-func InsertUserWithTable() {
+func InsertUserWithTable() *User {
 	user := User{
 		Name:       "Reese",
 		Password:   "zhao1Gem",
@@ -56,11 +56,107 @@ func InsertUserWithTable() {
 		Status:     1,
 		CreateTime: time.DateTime,
 	}
-	DB.Debug().Create(user)
+	DB.Create(&user)
+	return &user
+}
+
+func BatchInsertUsersWithTable() {
+	var studentList []User
+	for i := 0; i < 10; i++ {
+		studentList = append(studentList, User{
+			Name:       fmt.Sprintf("Reese%d", i+1),
+			Password:   "zhao1Gem",
+			Phone:      "15915176666",
+			Status:     1,
+			CreateTime: time.DateTime,
+		})
+	}
+	fmt.Println("studentList", studentList)
+	DB.Create(&studentList)
 }
 
 func TakeUserInfo() User {
 	var user User
-	//user = DB.Take(&user).RowsAffected
+	DB.Take(&user)
+	fmt.Println("user", user)
+	return user
+}
+
+func TakeFirstUserInfo() User {
+	var user User
+	DB.First(&user)
+	return user
+}
+
+func TakeLastUserInfo() User {
+	var user User
+	DB.Last(&user)
+	return user
+}
+
+//根据主键查询 take的第二个参数，默认会根据主键查询，可以是数字、字符串
+
+func QueryUserInfo(id string) User {
+	fmt.Println("id", id)
+	var user User
+	user = User{} // 重新赋值
+	err := DB.Take(&user, id).Error
+	switch err {
+	case gorm.ErrRecordNotFound:
+		fmt.Println("没有找到", err)
+	default:
+		fmt.Println("sql错误")
+	}
+
+	fmt.Println("user", user)
+	return user
+}
+
+func QueryUserInfo2(name string) User {
+	fmt.Println("name", name)
+	var user User
+	//使用？作为占位符，将查询的内容放入? 可以有效防止sql注入
+	//相当于 SELECT * FROM `students` WHERE name = '机器人27号' LIMIT 1
+	DB.Take(&user, "name = ?", name)
+	return user
+}
+
+func QueryTargetTotal(name string) int64 {
+	fmt.Println("name", name)
+	var user User
+	count := DB.Find(&user, "name = ?", name).RowsAffected
+	fmt.Println("count", count)
+	return count
+}
+func QueryUserList() []User {
+	var userList []User
+	DB.Find(&userList, []int{5, 6, 7, 8, 9})
+	//DB.Find(&userList,5,6,7,8,9) //一样的
+	fmt.Println("userList", userList)
+	return userList
+}
+
+func QueryUserListByName() []User {
+	var userList []User
+	DB.Find(&userList, "name in ?", []string{"Reese", "Reese1", "Reese2"})
+	fmt.Println("userList", userList)
+	return userList
+}
+
+func UpdateUserInfo(id string, name string) User {
+	var user User
+	DB.Take(&user, id)
+	user.Name = name
+	//全字段更新
+	DB.Save(&user)
+	return user
+}
+
+func SelectUpdateUserInfo(id string, name string) User {
+	var user User
+	DB.Take(&user, id)
+	user.Name = name
+	//全字段更新
+	DB.Select("name").Save(&user)
 	return user
 }
