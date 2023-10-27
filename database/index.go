@@ -1,6 +1,7 @@
 package database
 
 import (
+	"encoding/json"
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -159,4 +160,19 @@ func SelectUpdateUserInfo(id string, name string) User {
 	//全字段更新
 	DB.Select("name").Save(&user)
 	return user
+}
+
+func BatchUpdatePassword(status string, password string) []User {
+	var userList []User
+	fmt.Println("userList", &userList)
+
+	DB.Find(&userList, "status = ?", status).Update("password", password)
+	for _, user := range userList {
+		data, _ := json.Marshal(user)
+		fmt.Println("string(data)", string(data))
+	}
+
+	//DB.Model(&User{}).Where("status = ?", status).Update("password", password)
+	//不过这种方式没有返回值
+	return userList
 }

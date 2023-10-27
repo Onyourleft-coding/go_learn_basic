@@ -138,6 +138,7 @@ func UpdateUserInfo(c *gin.Context) {
 }
 
 // 更新指定字段
+
 func SelectUpdateUserInfo(c *gin.Context) {
 	id := c.Query("id")
 	name := c.Query("name")
@@ -145,6 +146,21 @@ func SelectUpdateUserInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
 		"code":    http.StatusOK,
+		"data":    result,
+	})
+}
+
+// 批量更新
+
+func BatchUpdatePassword(c *gin.Context) {
+	status := c.PostForm("status")
+	password := c.PostForm("password")
+	fmt.Println("name", status)
+	fmt.Println("password", password)
+	result := database.BatchUpdatePassword(status, password)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "更新成功",
+		"code":    0,
 		"data":    result,
 	})
 }
