@@ -164,3 +164,29 @@ func BatchUpdatePassword(c *gin.Context) {
 		"data":    result,
 	})
 }
+
+//更新多列 如果是结构体，它默认不会更新零值 批量更新status为0的邮箱
+
+func UpdateColumns(c *gin.Context) {
+	status := c.PostForm("status")
+	phone := c.PostForm("phone")
+	fmt.Println("status", status)
+	fmt.Println("phone", phone)
+}
+
+//更新指定字段 Select选定字段 Omit忽略字段
+
+//删除
+//根据结构体删除
+
+func DeleteUser(c *gin.Context) {
+	id := c.Query("id")
+
+	result := database.DeleteUser(id)
+	fmt.Println("result", result)
+	c.JSON(200, gin.H{
+		"message": "删除失败，请检查传入id是否正确",
+		"code":    0,
+		"data":    "",
+	})
+}

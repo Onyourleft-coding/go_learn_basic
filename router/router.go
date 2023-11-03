@@ -78,6 +78,7 @@ func StartRouter() *gin.Engine {
 		v2.POST("/UpdateUserInfo", api2.UpdateUserInfo)
 		v2.POST("/SelectUpdateUserInfo", api2.SelectUpdateUserInfo)
 		v2.POST("/batchUpdatePassword", api2.BatchUpdatePassword)
+		v2.GET("/deleteUser", api2.DeleteUser)
 	}
 
 	return router

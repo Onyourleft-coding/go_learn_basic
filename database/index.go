@@ -165,7 +165,6 @@ func SelectUpdateUserInfo(id string, name string) User {
 func BatchUpdatePassword(status string, password string) []User {
 	var userList []User
 	fmt.Println("userList", &userList)
-
 	DB.Find(&userList, "status = ?", status).Update("password", password)
 	for _, user := range userList {
 		data, _ := json.Marshal(user)
@@ -175,4 +174,15 @@ func BatchUpdatePassword(status string, password string) []User {
 	//DB.Model(&User{}).Where("status = ?", status).Update("password", password)
 	//不过这种方式没有返回值
 	return userList
+}
+
+func DeleteUser(id string) User {
+	var user User
+	err := DB.Find(&user, id).Error
+	if err != nil {
+		fmt.Println("err", err)
+		return user
+	}
+	DB.Delete(&user)
+	return user
 }
